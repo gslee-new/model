@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%-5level] %logger{36} - %msg%n" />
+
+    <springProfile name="profile-console">
+        <appender name="PROFILE-APPENDER" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <pattern>${LOG_PATTERN}</pattern>
+            </encoder>
+        </appender>
+    </springProfile>
+
+    <springProfile name="profile-file">
+        <appender name="PROFILE-APPENDER" class="ch.qos.logback.core.FileAppender">
+            <file>logs/app.log</file>
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <pattern>${LOG_PATTERN}</pattern>
+            </encoder>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>logs/app.%d{yyyy-MM-dd}_%i.log.gz</fileNamePattern>
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>100MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+                <maxHistory>30</maxHistory>
+            </rollingPolicy>
+        </appender>
+    </springProfile>
+
+    <springProfile name="log-level-local">
+        <property name="LEVEL_ROOT" value="DEBUG"/>
+        <property name="LEVEL_api" value="DEBUG"/>
+    </springProfile>
+    <springProfile name="log-level-dev">
+        <property name="LEVEL_ROOT" value="INFO"/>
+        <property name="LEVEL_api" value="DEBUG"/>
+    </springProfile>
+
+    <root level="${LEVEL_ROOT}">
+        <appender-ref ref="PROFILE-APPENDER"/>
+    </root>
+
+    <logger name="com.model.api" level="${LEVEL_api}">
+        <appender-ref ref="PROFILE-APPENDER"/>
+    </logger>
+
+</configuration>

@@ -4,8 +4,11 @@ spring:
     active: local
     group:
       local: profiles-local
+        , profile-console
+        , log-level-local
       dev: profiles-dev
-      prod: profiles-prod
+        , profile-file
+        , log-level-dev
 
 ---
 spring:
