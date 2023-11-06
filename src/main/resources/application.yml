@@ -1,0 +1,24 @@
+---
+spring:
+  profiles:
+    active: local
+    group:
+      local: profiles-local
+      dev: profiles-dev
+      prod: profiles-prod
+
+---
+spring:
+  config:
+    activate:
+      on-profile: "profiles-local"
+    import:
+      classpath:config/environment/environment-local.yml
+
+---
+spring:
+  config:
+    activate:
+      on-profile: "profiles-dev"
+    import:
+      classpath:config/environment/environment-dev.yml
